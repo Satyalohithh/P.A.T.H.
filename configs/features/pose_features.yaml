@@ -1,0 +1,23 @@
+# Pose feature extraction configuration (feature catalog A.1-A.7).
+# Formulas and edge cases are specified in docs/feature_catalog.md and
+# docs/fp-doc-02-repository-layout.md (feature extraction specification).
+
+pose_features:
+  enabled:
+    - pose.elbow_angle.L
+    - pose.elbow_angle.R
+    - pose.knee_angle.L
+    - pose.knee_angle.R
+    - pose.torso_lean
+    - pose.shoulder_orientation
+    - pose.upper_asymmetry
+    - pose.complexity
+    - pose.com_height
+
+thresholds:
+  min_valid_keypoints_for_pose: 7
+  keypoint_confidence_threshold: 0.45
+
+outputs:
+  nan_policy: skip_feature   # skip_feature | zero_fill | raise
+  precision: float32

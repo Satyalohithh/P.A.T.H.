@@ -1,0 +1,23 @@
+# YOLOv8n (nano) pose detection model configuration.
+
+model:
+  family: yolov8-pose
+  variant: n
+  weights: yolov8n-pose.pt
+  input_size: 640
+  device: cuda  # cuda | cpu | auto
+
+preprocessing:
+  stride: 32
+  pad_color: [114, 114, 114]
+  maintain_aspect_ratio: true
+
+postprocessing:
+  nms_iou_threshold: 0.45
+  conf_threshold: 0.25          # raw detection confidence
+  keypoint_conf_threshold: 0.45 # downstream pose gate
+
+performance:
+  target_fps: 30
+  expected_latency_ms: 15.0
+  batch_size: 1

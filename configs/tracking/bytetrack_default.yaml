@@ -1,0 +1,20 @@
+# ByteTrack multi-object tracker configuration.
+
+tracker:
+  family: bytetrack
+  max_age: 30
+  min_hits: 3
+  iou_threshold: 0.3
+  det_threshold_high: 0.5
+  det_threshold_low: 0.1
+  frame_rate: 30
+  track_buffer: 30
+
+matching:
+  metric: iou                 # iou | embedding | combined
+  embedding_weight: 0.5
+  iou_weight: 0.5
+
+stability:
+  min_observed_for_confirmed: 3
+  max_unmatched_frames_before_delete: 30

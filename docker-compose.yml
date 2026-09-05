@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      SAFEWATCH_ENV: development
+      SAFEWATCH_DATABASE_URL: postgresql+psycopg://safewatch:safewatch@db:5432/safewatch
+    env_file:
+      - .env
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./models/checkpoints:/app/models/checkpoints:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: safewatch
+      POSTGRES_PASSWORD: safewatch
+      POSTGRES_DB: safewatch
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safewatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+
+volumes:
+  pgdata:

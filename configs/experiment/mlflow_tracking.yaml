@@ -1,0 +1,17 @@
+# MLflow experiment tracking configuration.
+
+mlflow:
+  tracking_uri: sqlite:///mlruns/mlflow.db
+  default_experiment: safewatch-baseline
+  registry_uri: sqlite:///mlruns/registry.db
+
+autolog:
+  enabled: true
+  frameworks: [sklearn, xgboost, torch]
+
+metrics:
+  track: [f1_macro, f1_aggressive, precision_aggressive, recall_aggressive, roc_auc]
+
+dataset_artifacts:
+  document_version: true
+  dataset_registry: dvc

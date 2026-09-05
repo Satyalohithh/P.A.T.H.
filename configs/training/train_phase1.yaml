@@ -1,0 +1,26 @@
+# Phase 1 training configuration: baseline on aggregate interaction windows.
+
+run:
+  name: phase1_xgb_baseline
+  tracking-uri: configs/experiment/mlflow_tracking.yaml
+
+data:
+  splits: datasets/splits/{train,val}.json
+  dataset_version: v1
+
+features:
+  config: configs/features/pose_features.yaml
+  config_interaction: configs/features/interaction_features.yaml
+  window_frames: 30
+
+model:
+  config: configs/models/xgboost_baseline.yaml
+
+training:
+  random_state: 42
+  cv_folds: 5
+  target_metric: f1_macro
+
+artifacts:
+  output_dir: models/checkpoints/phase1
+  save_top_k: 3

@@ -1,0 +1,57 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deployment/docker/Dockerfile.api
+    env_file:
+      - ../.env
+    environment:
+      SAFEWATCH_ENV: production
+    volumes:
+      - ../models/exported:/app/models/exported:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  infer:
+    build:
+      context: ..
+      dockerfile: deployment/docker/Dockerfile.inference
+    env_file:
+      - ../.env
+    environment:
+      SAFEWATCH_ENV: production
+      SAFEWATCH_DEFAULT_MODEL_YAML: configs/inference/inference_realtime.yaml
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: safewatch
+      POSTGRES_PASSWORD: ${SAFEWATCH_DB_PASSWORD:?set SAFEWATCH_DB_PASSWORD}
+      POSTGRES_DB: safewatch
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safewatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deployment/docker/Dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  pgdata:

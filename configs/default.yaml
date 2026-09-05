@@ -1,0 +1,53 @@
+# SafeWatch AI default runtime configuration.
+# Every key here can be overridden by environment variables (SAFEWATCH_* prefix)
+# or by explicitly loading a more specific file under configs/.
+# See configs/README.md for the resolution order.
+
+environment: development
+
+logging:
+  level: INFO
+  format: json
+
+stream:
+  max_frame_rate: 30
+  default_stream_id: cam-01
+
+detection:
+  model: configs/detection/yolov8n.yaml
+  confidence_threshold: 0.45
+  # in active inference use (whether tracking/pose gate the detection)
+  enabled: true
+
+pose:
+  keypoint_confidence_threshold: 0.45
+  min_valid_keypoints: 7
+
+interaction:
+  window_frames: 30
+  head_height_units: h
+  contact_proximity_gate_h: 3.0
+  zones:
+    intimate_h: 0.5
+    personal_h: 1.5
+    social_h: 4.0
+
+smoothing:
+  sigma_frames: 2.0
+  kernel_width: 5
+
+features:
+  pose: configs/features/pose_features.yaml
+  interaction: configs/features/interaction_features.yaml
+
+behavior:
+  model: configs/models/xgboost_baseline.yaml
+
+alerting:
+  rules: configs/alerting/alert_rules.yaml
+
+inference:
+  profile: configs/inference/inference_realtime.yaml
+
+api:
+  server: configs/api/server_config.yaml

@@ -1,0 +1,56 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Model artifacts
+models/pretrained/*
+models/checkpoints/*
+models/exported/*
+!models/pretrained/.gitkeep
+!models/checkpoints/.gitkeep
+!models/exported/.gitkeep
+
+# Data
+datasets/raw/*
+datasets/processed/*
+!datasets/raw/.gitkeep
+!datasets/processed/.gitkeep
+datasets/video/sample_frames/*.jpg
+
+# Experiment tracking
+mlruns/
+dvc.lock
+dvc.yaml
+
+# Environments
+.env
+.env.*
+!.env.example
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.local
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

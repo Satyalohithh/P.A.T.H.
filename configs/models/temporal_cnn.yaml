@@ -1,0 +1,25 @@
+# Temporal CNN baseline for per-window sequence classification.
+
+model:
+  family: temporal_cnn
+  input_channels: 64   # per-window feature vector size (set at training)
+  window_frames: 30
+  num_classes: 4
+
+architecture:
+  conv_layers:
+    - channels: 64
+      kernel: 3
+      stride: 1
+    - channels: 128
+      kernel: 3
+      stride: 1
+  pooling: global_avg
+  hidden_units: [256]
+
+training:
+  epochs: 100
+  batch_size: 64
+  optimizer: adam
+  learning_rate: 0.001
+  early_stopping_patience: 10

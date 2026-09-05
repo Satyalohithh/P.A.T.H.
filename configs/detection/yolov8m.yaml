@@ -1,0 +1,23 @@
+# YOLOv8m (medium) pose detection model configuration.
+
+model:
+  family: yolov8-pose
+  variant: m
+  weights: yolov8m-pose.pt
+  input_size: 640
+  device: cuda  # cuda | cpu | auto
+
+preprocessing:
+  stride: 32
+  pad_color: [114, 114, 114]
+  maintain_aspect_ratio: true
+
+postprocessing:
+  nms_iou_threshold: 0.45
+  conf_threshold: 0.25
+  keypoint_conf_threshold: 0.45
+
+performance:
+  target_fps: 30
+  expected_latency_ms: 40.0
+  batch_size: 1

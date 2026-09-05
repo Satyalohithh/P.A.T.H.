@@ -1,0 +1,27 @@
+# Interaction feature extraction configuration (feature catalog C.1-C.10).
+
+interaction_features:
+  enabled:
+    - inter.distance
+    - inter.approach_rate
+    - inter.mutual_approach
+    - inter.facing_angle
+    - inter.confrontation_index
+    - inter.energy_ratio
+    - inter.pose_mirroring
+    - inter.contact_proximity
+    - inter.reach_vector
+    - inter.retreat_velocity
+
+zones:
+  head_height_units: h
+  intimate_h: 0.5
+  personal_h: 1.5
+  social_h: 4.0
+
+gating:
+  contact_proximity_gate_h: 3.0
+
+outputs:
+  nan_policy: skip_feature   # skip_feature | zero_fill | raise
+  precision: float32

@@ -1,0 +1,22 @@
+# BiLSTM with attention for per-window sequence classification.
+
+model:
+  family: bilstm_attention
+  input_size: 64    # per-frame feature vector size (set at training)
+  window_frames: 30
+  num_classes: 4
+
+architecture:
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.3
+  bidirectional: true
+  attention: additive
+
+training:
+  epochs: 150
+  batch_size: 64
+  optimizer: adam
+  learning_rate: 0.0005
+  scheduler: cosine
+  early_stopping_patience: 15

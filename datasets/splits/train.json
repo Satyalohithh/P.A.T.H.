@@ -1,0 +1,5 @@
+{
+  "version": "v0",
+  "description": "Placeholder train split; populated by scripts/prepare_features.py + DVC.",
+  "clips": []
+}

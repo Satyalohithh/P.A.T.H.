@@ -1,0 +1,19 @@
+{
+  "classes": {
+    "normal": 0,
+    "playful": 1,
+    "suspicious": 2,
+    "aggressive": 3
+  },
+  "window_frames_default": 30,
+  "keypoint_schema": "coco-17",
+  "proxemic_zones_h": {
+    "intimate": 0.5,
+    "personal": 1.5,
+    "social": 4.0
+  },
+  "annotation_fields": [
+    "id", "fps", "window_start", "window_end",
+    "tracks", "label", "annotator", "confidence"
+  ]
+}

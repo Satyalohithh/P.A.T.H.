@@ -1,0 +1,37 @@
+# Alert rule definitions. Each rule issues an alert when the risk score
+# crosses the configured threshold for the configured duration.
+
+rules:
+  - id: rule-aggressive-high
+    class: aggressive
+    risk_threshold: HIGH
+    min_duration_frames: 20
+    cooldown_seconds: 30
+    priority: critical
+
+  - id: rule-aggressive-medium
+    class: aggressive
+    risk_threshold: MEDIUM
+    min_duration_frames: 30
+    cooldown_seconds: 60
+    priority: high
+
+  - id: rule-suspicious-sustained
+    class: suspicious
+    risk_threshold: MEDIUM
+    min_duration_frames: 45
+    cooldown_seconds: 120
+    priority: medium
+
+channels:
+  - type: websocket
+    enabled: true
+  - type: database
+    enabled: true
+  - type: webhook
+    enabled: false
+    url: ""  # set at deployment time
+
+deduplication:
+  enabled: true
+  window_seconds: 300

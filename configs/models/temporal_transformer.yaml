@@ -1,0 +1,25 @@
+# Temporal Transformer for per-window sequence classification.
+
+model:
+  family: temporal_transformer
+  input_size: 64    # per-frame feature vector size (set at training)
+  window_frames: 30
+  num_classes: 4
+
+architecture:
+  d_model: 128
+  n_heads: 4
+  n_layers: 3
+  d_feedforward: 512
+  dropout: 0.1
+  pos_encoding: learned
+
+training:
+  epochs: 200
+  batch_size: 32
+  optimizer: adamw
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  scheduler: cosine
+  warmup_steps: 1000
+  early_stopping_patience: 20

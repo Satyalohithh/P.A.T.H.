@@ -1,0 +1,22 @@
+# Batch inference profile: offline analysis of recorded video, high accuracy.
+
+profile:
+  name: inference_batch
+  mode: offline
+
+pipeline:
+  detection: configs/detection/yolov8m.yaml
+  tracking: configs/tracking/bytetrack_default.yaml
+  features_pose: configs/features/pose_features.yaml
+  features_interaction: configs/features/interaction_features.yaml
+  model: configs/models/bilstm_attention.yaml
+  alert_rules: configs/alerting/alert_rules.yaml
+
+budget:
+  target_fps: 15
+  max_processing_latency_ms: 100
+  use_tensorrt: true
+
+output:
+  results_format: json
+  include_visualizations: true

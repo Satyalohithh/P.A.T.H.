@@ -1,0 +1,23 @@
+# Baseline behavior classifier: gradient-boosted classifier on per-window feature vectors.
+
+model:
+  family: xgboost
+  objective: multi:softprob
+  num_class: 4
+
+hyperparameters:
+  n_estimators: 300
+  max_depth: 6
+  learning_rate: 0.1
+  subsample: 0.8
+  colsample_bytree: 0.8
+  min_child_weight: 1.0
+  reg_lambda: 1.0
+
+data:
+  feature_window_frames: 30
+  feature_group: all   # pose | motion | interaction | all
+
+evaluation:
+  cv_folds: 5
+  scoring: f1_macro

@@ -1,0 +1,22 @@
+# Real-time inference profile: low-latency, single-stream edge deployment.
+
+profile:
+  name: inference_realtime
+  mode: online
+
+pipeline:
+  detection: configs/detection/yolov8n.yaml
+  tracking: configs/tracking/bytetrack_default.yaml
+  features_pose: configs/features/pose_features.yaml
+  features_interaction: configs/features/interaction_features.yaml
+  model: configs/models/xgboost_baseline.yaml
+  alert_rules: configs/alerting/alert_rules.yaml
+
+budget:
+  target_fps: 30
+  max_processing_latency_ms: 33.3
+  use_tensorrt: false
+
+streaming:
+  frame_queue_size: 16
+  result_queue_size: 16
