@@ -5,17 +5,14 @@ from __future__ import annotations
 from collections.abc import Iterator
 from typing import Self
 
-from safewatch.core.schemas.stream import FrameMetadata, VideoSource
-from safewatch.core.types import FrameIndex, TimePoint
-
-Frame = object
-"""Placeholder for the decoded frame buffer (np.ndarray at runtime)."""
+from safewatch.core.schemas.stream import FrameMetadata, VideoSourceConfig
+from safewatch.core.types import Frame, FrameIndex, TimePoint
 
 
 class VideoDecoder:
-    """Decodes frames from a :class:`VideoSource` at the nominal frame rate."""
+    """Decodes frames from a :class:`VideoSourceConfig` at nominal frame rate."""
 
-    def __init__(self, source: VideoSource) -> None:
+    def __init__(self, source: VideoSourceConfig) -> None:
         self.source = source
 
     def open(self) -> None:

@@ -12,7 +12,7 @@ from safewatch.core.schemas.features import (
 )
 from safewatch.core.schemas.pose import PoseResult, PoseRow
 from safewatch.core.schemas.risk import RiskAssessment, RiskExplanation
-from safewatch.core.schemas.stream import FrameMetadata, VideoSource
+from safewatch.core.schemas.stream import FrameMetadata, VideoSourceConfig
 from safewatch.core.schemas.tracking import Track, TrackAssignment, TrackState
 
 __all__ = [
@@ -34,6 +34,6 @@ __all__ = [
     "Track",
     "TrackAssignment",
     "TrackState",
-    "VideoSource",
+    "VideoSourceConfig",
     "WindowSummary",
 ]

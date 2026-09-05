@@ -7,7 +7,10 @@ are installed.
 
 from __future__ import annotations
 
-from typing import TypeAlias
+from typing import TYPE_CHECKING, TypeAlias
+
+if TYPE_CHECKING:
+    import numpy as np
 
 TrackId: TypeAlias = int
 """Identity of a tracked person (assigned by the tracker, stable over frames)."""
@@ -24,6 +27,9 @@ TimePoint: TypeAlias = float
 Confidence: TypeAlias = float
 """Probability-like score in [0.0, 1.0]."""
 
+Frame: TypeAlias = "np.ndarray"
+"""A decoded BGR image frame."""
+
 Keypoint: TypeAlias = tuple[float, float, float]
 """A single keypoint as (x, y, confidence). See constants.Keypoint for indices."""
 
@@ -35,6 +41,7 @@ Vec2D: TypeAlias = tuple[float, float]
 
 __all__ = [
     "Confidence",
+    "Frame",
     "FrameIndex",
     "Keypoint",
     "Keypoints",

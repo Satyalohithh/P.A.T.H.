@@ -6,7 +6,8 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import TypedDict
 
-from safewatch.core.types import FrameIndex, TrackId
+from safewatch.core.schemas.detection import BBox
+from safewatch.core.types import Confidence, FrameIndex, TimePoint, TrackId
 
 
 class TrackState(StrEnum):
@@ -20,18 +21,23 @@ class TrackState(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class Track:
-    """A person track with state and last-seen location."""
+    """A person track with stable identity, state, and latest observation."""
 
     track_id: TrackId
     state: TrackState
     first_frame: FrameIndex
     last_frame: FrameIndex
-    # (xmin, ymin, xmax, ymax) of the most recent observation.
-    last_bbox: tuple[float, float, float, float] | None = None
+    bbox: BBox
+    confidence: Confidence
+    timestamp: TimePoint
+    age: int
+    hits: int
 
     @property
     def is_confirmed(self) -> bool:
-        raise NotImplementedError("TODO(implementation): Track.is_confirmed")
+        """A track is confirmed once it has been successfully matched."""
+
+        return self.state in (TrackState.ACTIVE, TrackState.LOST)
 
 
 @dataclass(frozen=True, slots=True)

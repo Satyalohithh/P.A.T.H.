@@ -19,6 +19,10 @@ class SafeWatchPipelineError(SafeWatchError):
     """Base class for failures inside the video-analysis pipeline."""
 
 
+class SourceError(SafeWatchPipelineError):
+    """Frame-source ingestion failure (open/read/close of a video source)."""
+
+
 class DetectionError(SafeWatchPipelineError):
     """Person detection stage failure."""
 
@@ -71,6 +75,7 @@ __all__ = [
     "SafeWatchConfigError",
     "SafeWatchError",
     "SafeWatchPipelineError",
+    "SourceError",
     "StorageError",
     "TrackingError",
 ]

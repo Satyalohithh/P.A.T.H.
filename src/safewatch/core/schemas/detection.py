@@ -50,6 +50,7 @@ class Detection:
     confidence: Confidence
     class_id: int
     class_name: str
+    timestamp: TimePoint = 0.0
 
 
 class DetectionFrameView(TypedDict):

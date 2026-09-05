@@ -4,15 +4,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from safewatch.core.schemas.stream import VideoSource
+from safewatch.core.schemas.stream import VideoSourceConfig
 from safewatch.core.types import StreamId
-from safewatch.ingestion import FrameBuffer, VideoDecoder
+from safewatch.ingestion.decoder import VideoDecoder
+from safewatch.ingestion.frame_buffer import FrameBuffer
 
 
 class StreamManager:
     """Attaches decoders and buffers to each registered stream."""
 
-    def __init__(self, sources: Iterable[VideoSource]) -> None:
+    def __init__(self, sources: Iterable[VideoSourceConfig]) -> None:
         self._sources = {source.stream_id: source for source in sources}
         self._decoders: dict[StreamId, VideoDecoder | None] = {
             sid: None for sid in self._sources
@@ -38,4 +39,4 @@ class StreamManager:
         raise NotImplementedError("TODO(implementation): StreamManager.active_streams")
 
 
-__all__ = ["FrameBuffer", "StreamManager", "VideoDecoder", "VideoSource"]
+__all__ = ["FrameBuffer", "StreamManager", "VideoDecoder", "VideoSourceConfig"]

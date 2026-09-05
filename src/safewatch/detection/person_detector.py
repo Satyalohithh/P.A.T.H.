@@ -1,37 +1,32 @@
-"""Person detection stage (YOLOv8-pose backend, declared)."""
+"""Person detection stage interface.
+
+Concrete implementations (e.g. :class:`YOLOPersonDetector`) detect persons in
+a single frame and return the shared :class:`Detection` list.
+"""
 
 from __future__ import annotations
 
-from safewatch.core import types as core_types
-from safewatch.core.schemas.detection import Detection, DetectionList
-from safewatch.core.types import Confidence
-from safewatch.ingestion.decoder import Frame
+from abc import ABC, abstractmethod
+
+from safewatch.core.schemas.detection import DetectionList
+from safewatch.core.types import Frame, TimePoint
 
 
-class PersonDetector:
-    """Detects persons and their keypoints in a single frame."""
+class PersonDetector(ABC):
+    """Interface for frame-level person detection."""
 
-    def __init__(
-        self,
-        weights_path: str,
-        conf_threshold: Confidence = 0.25,
-    ) -> None:
-        self.weights_path = weights_path
-        self.conf_threshold = conf_threshold
-
-    def detect(self, frame: Frame) -> DetectionList:
+    @abstractmethod
+    def detect(self, frame: Frame, *, timestamp: TimePoint = 0.0) -> DetectionList:
         """Return all person detections in ``frame`` (no tracking yet)."""
 
-        raise NotImplementedError("TODO(implementation): PersonDetector.detect")
-
+    @abstractmethod
     def warmup(self) -> None:
-        raise NotImplementedError("TODO(implementation): PersonDetector.warmup")
+        """Load weights / allocate device buffers before steady-state use."""
 
     @property
+    @abstractmethod
     def latency_ms(self) -> float:
         """Rolling median inference latency for the detector."""
 
-        raise NotImplementedError("TODO(implementation): PersonDetector.latency_ms")
 
-
-__all__ = ["Confidence", "Detection", "DetectionList", "PersonDetector", "core_types"]
+__all__ = ["PersonDetector"]

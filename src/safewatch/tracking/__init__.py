@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from safewatch.tracking.association import Association
-from safewatch.tracking.multi_object_tracker import MultiObjectTracker
-from safewatch.tracking.track_manager import TrackManager
+from safewatch.tracking.bytetrack_tracker import ByteTrackTracker
+from safewatch.tracking.interfaces import Tracker
 
-__all__ = ["Association", "MultiObjectTracker", "TrackManager"]
+__all__ = ["ByteTrackTracker", "Tracker"]

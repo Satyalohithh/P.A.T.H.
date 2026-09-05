@@ -19,6 +19,13 @@ detection:
   # in active inference use (whether tracking/pose gate the detection)
   enabled: true
 
+tracking:
+  backend: bytetrack
+  track_thresh: 0.5
+  match_thresh: 0.8
+  track_buffer: 30
+  min_hits: 1
+
 pose:
   keypoint_confidence_threshold: 0.45
   min_valid_keypoints: 7

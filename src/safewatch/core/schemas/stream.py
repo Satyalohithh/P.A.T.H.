@@ -18,8 +18,8 @@ class VideoSourceType(StrEnum):
 
 
 @dataclass(frozen=True, slots=True)
-class VideoSource:
-    """Descriptor of one input video stream."""
+class VideoSourceConfig:
+    """Immutable descriptor/config of one input video stream."""
 
     stream_id: StreamId
     uri: str
@@ -38,4 +38,4 @@ class FrameMetadata:
     height: int = 0
 
 
-__all__ = ["FrameMetadata", "VideoSource", "VideoSourceType"]
+__all__ = ["FrameMetadata", "VideoSourceConfig", "VideoSourceType"]
