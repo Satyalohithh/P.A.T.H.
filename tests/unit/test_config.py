@@ -6,6 +6,7 @@ import pytest
 
 from safewatch.core.config import (
     DetectionConfig,
+    PoseConfig,
     Settings,
     TrackingConfig,
     YamlConfigLoader,
@@ -57,6 +58,22 @@ class TestSettingsFromMapping:
         assert settings.tracking.track_thresh == 0.6
         assert settings.tracking.match_thresh == 0.75
 
+    def test_pose_keys_collected_in_defaults(self) -> None:
+        settings = Settings.from_mapping({})
+        assert settings.pose == PoseConfig()
+
+    def test_pose_prefix_keys_fold_into_nested(self) -> None:
+        settings = Settings.from_mapping(
+            {"pose_conf_threshold": "0.4", "pose_weights": "pose.pt"}
+        )
+        assert settings.pose.conf_threshold == 0.4
+        assert settings.pose.weights == "pose.pt"
+        assert settings.pose.device == "auto"
+
+    def test_pose_flat_keypoint_keys_stay_flat(self) -> None:
+        settings = Settings.from_mapping({"min_valid_keypoints_for_pose": "8"})
+        assert settings.min_valid_keypoints_for_pose == 8
+
 
 class TestSettingsFromEnvironment:
     def test_prefix_filtering(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -78,6 +95,13 @@ class TestSettingsFromEnvironment:
         monkeypatch.setenv("SAFEWATCH_TRACKING_TRACK_BUFFER", "60")
         assert Settings.from_environment().tracking.track_buffer == 60
 
+    def test_pose_env_var(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("SAFEWATCH_POSE_CONF_THRESHOLD", "0.5")
+        monkeypatch.setenv("SAFEWATCH_POSE_DEVICE", "cuda")
+        settings = Settings.from_environment()
+        assert settings.pose.conf_threshold == 0.5
+        assert settings.pose.device == "cuda"
+
 
 class TestSettingsSerialization:
     def test_as_dict_excludes_extra(self, settings: Settings) -> None:
@@ -91,6 +115,8 @@ class TestSettingsSerialization:
         assert "conf_threshold" in data["detection"]
         assert data["tracking"] == TrackingConfig().model_dump()
         assert "track_thresh" in data["tracking"]
+        assert data["pose"] == PoseConfig().model_dump()
+        assert "conf_threshold" in data["pose"]
 
 
 class TestYamlConfigLoader:
@@ -120,6 +146,9 @@ tracking:
   track_buffer: 40
   min_hits: 3
 pose:
+  weights: pose.pt
+  confidence_threshold: 0.4
+  device: cuda
   keypoint_confidence_threshold: 0.5
   min_valid_keypoints: 8
 interaction:
@@ -140,6 +169,9 @@ smoothing:
         assert got["tracking"]["match_thresh"] == 0.75
         assert got["tracking"]["track_buffer"] == 40
         assert got["tracking"]["min_hits"] == 3
+        assert got["pose"]["weights"] == "pose.pt"
+        assert got["pose"]["conf_threshold"] == 0.4
+        assert got["pose"]["device"] == "cuda"
         assert got["min_valid_keypoints_for_pose"] == 8
         assert got["interaction_window_frames"] == 42
         assert got["intimate_zone_h"] == 0.6
@@ -153,6 +185,7 @@ class TestLoadSettings:
         assert settings.log_level == "INFO"
         assert settings.detection.conf_threshold == 0.45
         assert settings.tracking == TrackingConfig()
+        assert settings.pose == PoseConfig()
 
     def test_env_overrides_yaml(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("SAFEWATCH_LOG_LEVEL", "DEBUG")

@@ -66,6 +66,16 @@ class TrackingConfig(BaseModel):
     min_hits: int = Field(default=1, ge=1)
 
 
+class PoseConfig(BaseModel):
+    """YOLO pose-estimation settings (YOLOv8n-pose weights by default)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    weights: str = "yolov8n-pose.pt"
+    conf_threshold: float = Field(default=0.25, ge=0.0, le=1.0)
+    device: Literal["cuda", "cpu", "auto"] = "auto"
+
+
 class Settings(BaseModel):
     """Immutable runtime settings validated by Pydantic."""
 
@@ -90,6 +100,9 @@ class Settings(BaseModel):
 
     tracking: TrackingConfig = TrackingConfig()
     """Multi-object tracking sub-configuration (backend, thresholds)."""
+
+    pose: PoseConfig = PoseConfig()
+    """Pose-estimation sub-configuration (weights, confidence, device)."""
 
     extra: dict[str, Any] = Field(default_factory=dict)
     """Unrecognized overrides are preserved here instead of rejected."""
@@ -156,11 +169,12 @@ def _nested_field_names(model_name: str) -> set[str]:
     mapping: dict[str, type[BaseModel]] = {
         "detection": DetectionConfig,
         "tracking": TrackingConfig,
+        "pose": PoseConfig,
     }
     return set(mapping[model_name].model_fields)
 
 
-_NESTED_MODEL_NAMES = {"detection", "tracking"}
+_NESTED_MODEL_NAMES = {"detection", "tracking", "pose"}
 
 
 class ConfigLoader(ABC):
@@ -232,6 +246,12 @@ def _flatten_yaml(raw: Mapping[str, Any]) -> _ConfigMapping:
             keys=("keypoint_confidence_threshold", "min_valid_keypoints"),
         )
         _rename_key(mapping, "min_valid_keypoints", "min_valid_keypoints_for_pose")
+        pose: dict[str, Any] = {}
+        _copy_keys(source=pose_cfg, target=pose, keys=("weights", "device"))
+        if "confidence_threshold" in pose_cfg:
+            pose["conf_threshold"] = pose_cfg["confidence_threshold"]
+        if pose:
+            mapping["pose"] = pose
 
     interaction_cfg = raw.get("interaction")
     if isinstance(interaction_cfg, Mapping):
@@ -372,6 +392,7 @@ __all__ = [
     "DEFAULT_CONFIG_PATH",
     "ConfigLoader",
     "DetectionConfig",
+    "PoseConfig",
     "Settings",
     "TrackingConfig",
     "YamlConfigLoader",

@@ -27,6 +27,9 @@ tracking:
   min_hits: 1
 
 pose:
+  weights: yolov8n-pose.pt
+  confidence_threshold: 0.25
+  device: auto
   keypoint_confidence_threshold: 0.45
   min_valid_keypoints: 7
 

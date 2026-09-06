@@ -12,6 +12,11 @@ Frozen feature catalog:
                          inter.facing_angle, inter.confrontation_index,
                          inter.energy_ratio, inter.pose_mirroring,
                          inter.contact_proximity, inter.reach_vector, inter.retreat_velocity
+- Group D (temporal):    temporal.reciprocity (in FeatureRecord only; not in FEATURE_NAMES)
+
+Scoped Phase 4 implementation: geometry helpers, FeatureCache, and the FeatureEngine
+emit the locked-in slices A.3, B.1, C.1-C.3, D.6 as FeatureRecords. The legacy
+full-group extractors remain stubs.
 """
 
 from __future__ import annotations
@@ -21,21 +26,34 @@ from safewatch.features.base import (
     FeatureExtractorError,
     register_feature_extractor,
 )
+from safewatch.features.behavioral_features import (
+    EGO_FEATURE_NAMES,
+    PAIR_FEATURE_NAMES,
+    BehavioralFeatureError,
+    FeatureEngine,
+)
 from safewatch.features.feature_names import FEATURE_NAMES, feature_id
 from safewatch.features.feature_pipeline import FeaturePipeline
 from safewatch.features.interaction_features import InteractionFeatureExtractor
+from safewatch.features.intermediate import FeatureCache, PoseStats
 from safewatch.features.motion_features import MotionFeatureExtractor
 from safewatch.features.pose_features import PoseFeatureExtractor
 from safewatch.features.temporal_aggregator import TemporalAggregator
 
 __all__ = [
+    "EGO_FEATURE_NAMES",
     "FEATURE_NAMES",
+    "PAIR_FEATURE_NAMES",
+    "BehavioralFeatureError",
+    "FeatureCache",
+    "FeatureEngine",
     "FeatureExtractor",
     "FeatureExtractorError",
     "FeaturePipeline",
     "InteractionFeatureExtractor",
     "MotionFeatureExtractor",
     "PoseFeatureExtractor",
+    "PoseStats",
     "TemporalAggregator",
     "feature_id",
     "register_feature_extractor",

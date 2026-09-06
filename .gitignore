@@ -22,6 +22,8 @@ models/exported/*
 !models/pretrained/.gitkeep
 !models/checkpoints/.gitkeep
 !models/exported/.gitkeep
+# Auto-downloaded Ultralytics weights used by smoke tests / demos
+/*.pt
 
 # Data
 datasets/raw/*
