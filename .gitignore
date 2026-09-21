@@ -29,8 +29,16 @@ models/exported/*
 datasets/raw/*
 datasets/processed/*
 !datasets/raw/.gitkeep
+!datasets/raw/README.md
 !datasets/processed/.gitkeep
 datasets/video/sample_frames/*.jpg
+
+# Experiment artifacts
+artifacts/*
+!artifacts/.gitkeep
+
+reports/*
+!reports/.gitkeep
 
 # Experiment tracking
 mlruns/
