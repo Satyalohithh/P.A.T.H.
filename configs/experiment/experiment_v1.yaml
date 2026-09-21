@@ -1,0 +1,37 @@
+# experiment_v1: RWF-2000 + Hockey Fight -> 3-class active-label XGBoost baseline
+#
+# Consumed by scripts/run_experiment.py and safewatch.data.experiment.
+# Raw media is NOT downloaded here; datasets/raw/{rwf_2000,hockey_fight} are
+# expected to be populated by the user (see datasets/raw/README.md).
+# The training class count is derived from the classes actually present in the
+# manifest (training on active classes only, not the frozen 4-class taxonomy).
+
+name: experiment_v1
+description: >
+  RWF-2000 (Fight/NonFight) + Hockey Fight, unified 3-class labels, 14-dim
+  video-level window features -> active-class XGBoost baseline with full
+  artifact snapshots (config, manifest, metrics, feature importance,
+  confusion matrix) and an auto-generated report.
+seed: 42
+manifest: datasets/manifest.csv
+raw_root: datasets/raw
+splits_dir: datasets/splits
+# train/val/test produced reproducibly by scripts/split_dataset.py;
+# the experiment re-derives its own train/test split at the video level.
+val_size: 0.15
+test_size: 0.15
+sources:
+  - rwf2000
+  - hockey_fight
+# Cap frames per clip so inference stays tractable; null = full clip.
+frames_cap: 300
+device: auto
+window_frames: 30
+# Reuses the baseline hyperparameters; num_class is derived from active classes.
+training_config: configs/models/xgboost_baseline.yaml
+artifacts_dir: artifacts
+reports_dir: reports
+models_dir: models/checkpoints
+# Safety valve: cap total clips processed (null = unlimited).
+max_clips: null
+synthetic_videos: 8
